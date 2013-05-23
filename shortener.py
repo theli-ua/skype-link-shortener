@@ -129,7 +129,6 @@ class SkypeHandler:
             body = re.sub(self.url_re, self.shorten, body)
             if msg.Body != body:
                 msg.Body = body
-        sys.exit(1)
 
 if __name__ == '__main__':
     SkypeHandler()
