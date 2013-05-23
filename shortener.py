@@ -86,12 +86,12 @@ class SkypeHandler:
         # Base domain regex off RFC 1034 and 1738
         _label = r'[0-9a-z][-0-9a-z]*[0-9a-z]?'
         _domain = r'%s(?:\.%s)*\.[0-9a-z][-0-9a-z]+' % (_label, _label)
-        _urlRe = r'(\w+://(?:\S+@)?(?:%s|%s)(?::\d+)?(?:/[^\])>\s]*)?)' % (_domain,
+        _urlRe = r'(\w+://(?:\S+@)?(%s|%s)(?::\d+)?(?:/[^\])>\s]*)?)' % (_domain,
                                                                            _ipAddr)
         urlRe = re.compile(_urlRe, re.I)
-        _httpUrlRe = r'(https?://(?:\S+@)?(?:%s|%s)(?::\d+)?(?:/[^\])>\s]*)?)' % \
-                     (_domain, _ipAddr)
-        httpUrlRe = re.compile(_httpUrlRe, re.I)
+        #_httpUrlRe = r'(https?://(?:\S+@)?(?:%s|%s)(?::\d+)?(?:/[^\])>\s]*)?)' % \
+                     #(_domain, _ipAddr)
+        #httpUrlRe = re.compile(_httpUrlRe, re.I)
 
         self.url_re = urlRe
 
@@ -100,8 +100,9 @@ class SkypeHandler:
         if url.startswith('http://goo.gl/'):
             return url
         res = self.googl.shorten(url)
+        print m.groups()
         if 'id' in res:
-            return res['id']
+            return ''.join([res['id'], ' (' , m.group(2), ')'])
         return url
         
     def get_client(self):
