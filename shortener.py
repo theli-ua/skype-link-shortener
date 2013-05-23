@@ -97,12 +97,19 @@ class SkypeHandler:
 
     def shorten(self, m):
         url = m.group(1)
-        if url.startswith('http://goo.gl/'):
+        if url.startswith('https://forums.heroesofnewerth.com/showthread.php?') or \
+                url.startswith('http://forums.heroesofnewerth.com/showthread.php?'):
+            suffix = url[49:]
+            if url[4] == 's':
+                suffix = suffix[1:]
+            suffix = 'forums:' + ' '.join(suffix.split('&')[0].split('-')[1:])
+        else:
+            suffix = m.group(2)
+        if url.startswith('http://goo.gl/') or len(url) <= (21 + len(suffix)):
             return url
         res = self.googl.shorten(url)
-        print m.groups()
         if 'id' in res:
-            return ''.join([res['id'], ' (' , m.group(2), ')'])
+            return ''.join([res['id'], ' (' , suffix, ')'])
         return url
         
     def get_client(self):
